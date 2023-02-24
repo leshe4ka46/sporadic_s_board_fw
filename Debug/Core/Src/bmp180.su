@@ -1,0 +1,11 @@
+../Core/Src/bmp180.c:14:6:BMP180_init	16	static
+../Core/Src/bmp180.c:28:6:BMP180_WriteReg	32	static
+../Core/Src/bmp180.c:33:9:BMP180_ReadReg	32	static
+../Core/Src/bmp180.c:44:6:BMP180_set_oss	16	static
+../Core/Src/bmp180.c:48:6:_oss_delay	8	static
+../Core/Src/bmp180.c:60:6:BMP180_get_calibration_coefficients	880	static
+../Core/Src/bmp180.c:79:9:BMP180_UT	16	static
+../Core/Src/bmp180.c:85:6:BMP180_get_data	16	static
+../Core/Src/bmp180.c:96:8:BMP180_Press	48	static
+../Core/Src/bmp180.c:123:9:BMP180_Temp	24	static
+../Core/Src/bmp180.c:132:6:BMP180_upd_data	16	static
