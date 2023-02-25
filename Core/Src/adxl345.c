@@ -100,14 +100,3 @@ void ADXL_get_data(){
 	_adxl_data->adxl345.ay=((data_rec[3]<<8)|data_rec[2]);
 	_adxl_data->adxl345.az=((data_rec[5]<<8)|data_rec[4]);
 }
-void ADXL_read(){
-
-	/*HAL_I2C_Mem_Read (_adxl_i2c, ADXL_ADDR<<1, 0x32, 1, (uint8_t *)data_rec, 6, 100);
-	x = ((data_rec[1]<<8)|data_rec[0]);
-	y = ((data_rec[3]<<8)|data_rec[2]);
-	z = ((data_rec[5]<<8)|data_rec[4]);
-	char* y_data[100];
-	sprintf(y_data,"0x33 %d 0x32 %d",((data_rec[1]<<8)|data_rec[0]),((data_rec[3]<<8)|data_rec[2]));
-	log_s(y_data);*/
-
-}

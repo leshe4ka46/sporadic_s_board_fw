@@ -46,37 +46,21 @@ UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 void I2C_Scan ()
 {
-	// создание переменной, содержащей статус
-        HAL_StatusTypeDef res;
-	// сообщение о начале процедуры
-        char info[] = "Scanning I2C bus...\r\n";
-        // отправка сообщения по UART
-        HAL_UART_Transmit(&huart1, (uint8_t*)info, strlen(info), HAL_MAX_DELAY);
-	/* &huart5 - адрес используемого UART
-	 * (uint8_t*)info - указатель на значение для отправки
-	 * strlen(info) - длина отправляемого сообщения
-	 * HAL_MAX_DELAY - задержка
-	 */
-        // перебор всех возможных адресов
+	HAL_StatusTypeDef res;
+	char info[] = "Scanning I2C bus...\r\n";
+	HAL_UART_Transmit(&huart1, (uint8_t*)info, strlen(info), HAL_MAX_DELAY);
 	for(uint16_t i = 0; i < 128; i++)
 	{
-            // проверяем, готово ли устройство по адресу i для связи
-            res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, HAL_MAX_DELAY);
-	    // если да, то
-            if(res == HAL_OK)
-	    {
+        res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, HAL_MAX_DELAY);
+        if(res == HAL_OK){
 	    	char msg[64];
-	    	// запись адреса i, на который откликнулись, в строку в виде
-                // 16тиричного значения:
 	    	snprintf(msg, sizeof(msg), "0x%02X", i);
-	    	// отправка номера откликнувшегося адреса
 	    	HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-	    	// переход на новую строчку
 	    	HAL_UART_Transmit(&huart1, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY);
 	    }
-	    else HAL_UART_Transmit(&huart1, (uint8_t*)".", 1, HAL_MAX_DELAY);
+	    //else HAL_UART_Transmit(&huart1, (uint8_t*)".", 1, HAL_MAX_DELAY);
 	}
-	HAL_UART_Transmit(&huart1, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t*)"\r\nend\r\n", 7, HAL_MAX_DELAY);
 }
 /* USER CODE END PV */
 
@@ -127,7 +111,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   blink_stmled();
-  //I2C_Scan();
+  I2C_Scan();
   debug_init(&huart1);
   log_s("Start");
   GY801_init(&hi2c1,&data);

@@ -28,7 +28,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/structs.h ../Core/Inc/debug.h ../Core/Inc/gy801.h \
- ../Core/Inc/bmp180.h
+ ../Core/Inc/bmp180.h ../Core/Inc/adxl345.h ../Core/Inc/l3g4200d.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -62,3 +62,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/debug.h:
 ../Core/Inc/gy801.h:
 ../Core/Inc/bmp180.h:
+../Core/Inc/adxl345.h:
+../Core/Inc/l3g4200d.h:

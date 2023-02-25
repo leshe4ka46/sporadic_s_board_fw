@@ -4,7 +4,7 @@
 #include <stm32f4xx_hal.h>
 
 typedef struct{
-	double pressure;
+	uint32_t pressure;
 	int32_t temp;
 } bmp180;
 
@@ -16,8 +16,15 @@ typedef struct{
 } adxl345;
 
 typedef struct{
+	int16_t gx;
+	int16_t gy;
+	int16_t gz;
+} l3g4200d;
+
+typedef struct{
 	bmp180 bmp180;
 	adxl345 adxl345;
+	l3g4200d l3g4200d;
 } readings;
 
 #endif // STRUCTS_H

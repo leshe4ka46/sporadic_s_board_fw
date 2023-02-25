@@ -6,6 +6,6 @@
 ../Core/Src/bmp180.c:60:6:BMP180_get_calibration_coefficients	880	static
 ../Core/Src/bmp180.c:79:9:BMP180_UT	16	static
 ../Core/Src/bmp180.c:85:6:BMP180_get_data	16	static
-../Core/Src/bmp180.c:96:8:BMP180_Press	48	static
-../Core/Src/bmp180.c:123:9:BMP180_Temp	24	static
-../Core/Src/bmp180.c:132:6:BMP180_upd_data	16	static
+../Core/Src/bmp180.c:96:10:BMP180_Press	48	static
+../Core/Src/bmp180.c:122:9:BMP180_Temp	24	static
+../Core/Src/bmp180.c:131:6:BMP180_upd_data	16	static

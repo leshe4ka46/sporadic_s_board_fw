@@ -26,6 +26,4 @@ uint8_t ADXL_get_range();
 void ADXL_init(I2C_HandleTypeDef *i2c,readings *data);
 void ADXL_get_data();
 void ADXL_power(uint8_t pw);
-
-void ADXL_read();
 #endif /* INC_ADXL_H_ */

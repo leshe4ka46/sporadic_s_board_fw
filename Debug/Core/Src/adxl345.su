@@ -8,4 +8,3 @@
 ../Core/Src/adxl345.c:79:6:ADXL_power	16	static
 ../Core/Src/adxl345.c:87:6:ADXL_full_res	16	static
 ../Core/Src/adxl345.c:96:6:ADXL_get_data	32	static
-../Core/Src/adxl345.c:103:6:ADXL_read	4	static

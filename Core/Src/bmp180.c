@@ -93,7 +93,7 @@ void BMP180_get_data()
 	_raw_p= ((BMP180_ReadReg(BMP180_MSB) << 16) | (BMP180_ReadReg(BMP180_LSB) << 8) | BMP180_ReadReg(BMP180_XLSB_REG)) >> (8 - _oss);
 }
 
-double BMP180_Press()
+uint32_t BMP180_Press()
 {
 	int32_t x1 = (_raw_t - _calib_data.AC6) * _calib_data.AC5 / (1 << 15);
 	int32_t x2 = (_calib_data.MC * (1 << 11)) / (x1 + _calib_data.MD);
@@ -116,8 +116,7 @@ double BMP180_Press()
 	x1 = (p / (1 << 8)) * (p / (1 << 8));
 	x1 = (x1 * 3038) / (1 << 16);
 	x2 = (-7357 * p) / (1 << 16);
-	p = p + (x1 + x2 + 3791) / (1 << 4);
-	return p;
+	return (uint32_t)(p + (x1 + x2 + 3791) / (1 << 4));
 }
 
 int32_t BMP180_Temp()
