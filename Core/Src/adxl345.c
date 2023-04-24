@@ -17,9 +17,6 @@ void ADXL_init(I2C_HandleTypeDef *i2c,readings *data){
 	}
 	_adxl_data->adxl345.scale=2*(1<<(7-ADXL_get_range()));
 	//log_s_int("dev id=",ADXL_ReadReg(ADXL345_DEVID));
-
-
-
 }
 
 

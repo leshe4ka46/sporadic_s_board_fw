@@ -1,0 +1,10 @@
+../Core/Src/nrf.c:10:6:sleep_micros	16	static
+../Core/Src/nrf.c:15:6:spi_write	16	static
+../Core/Src/nrf.c:19:6:nrf_write	16	static
+../Core/Src/nrf.c:27:9:nrf_read	32	static
+../Core/Src/nrf.c:37:6:nrf_set_addr	24	static
+../Core/Src/nrf.c:49:6:NRF_init	16	static
+../Core/Src/nrf.c:74:6:nrf_flush_tx	16	static
+../Core/Src/nrf.c:88:6:nrf_send	16	static
+../Core/Src/nrf.c:100:6:NRF24_Transmit	16	static
+../Core/Src/nrf.c:111:9:nrf24l01p_write_tx_fifo	32	static
