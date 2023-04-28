@@ -86,7 +86,6 @@ readings data;
   * @brief  The application entry point.
   * @retval int
   */
-uint8_t nrf_send_data[32];
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -128,7 +127,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t last_t;
+  uint32_t last_t, time_t;
+
+  // madgwick
+  uint32_t ahrs_t;
+  float imu[3];
+  log_p(&imu[0]);
+  float quat[4];
+  ahrs_t=HAL_GetTick();
   while (1)
   {
     /* USER CODE END WHILE */
@@ -140,11 +146,32 @@ int main(void)
 	  //nrf_send_data[0]=cc;
 	  //nrf24l01p_write_tx_fifo(&nrf_send_data);
 	  //cc+=1;
-	  if(HAL_GetTick()-last_t>=200){
-		  GY801_update_data();
-		  blink_stmled();
+	  if(HAL_GetTick()-last_t>=5){
 		  last_t=HAL_GetTick();
+		  time_t=HAL_GetTick();
+		  GY801_update_data();
+		  log_s_int("READ",HAL_GetTick()-time_t);
+		  time_t=HAL_GetTick();
+		  MadgwickAHRSupdate((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625,(float)data.lsm303dlhc_mag.mx*0.1388,(float)data.lsm303dlhc_mag.my*0.1388,(float)data.lsm303dlhc_mag.mz*0.1388);
+		  //MadgwickAHRSupdateIMU((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625);
+		  //MadgwickAHRSupdateIMU(0.02,-0.01,-0.02,-0.01,3200,8900,17600);
+		  ahrs_t=HAL_GetTick();
+
+		  log_s_int("AHRS",HAL_GetTick()-time_t);
+		  quat[0] = q0; quat[1] = q1; quat[2] = q2; quat[3] = q3;
+		  quat2Euler(&quat[0], &imu[0]);
+		  for(uint8_t i=0;i<3;i++){
+			  imu[i]/=0.01745329252;
+		  }
+		  /*char* mg_data[100];
+		  sprintf((char*)mg_data,"X:%f Y:%f Z:%f %p %p %p",imu[0]*180/M_PI,imu[1]*180/M_PI,imu[2]*180/M_PI,&imu[0],&imu[1],&imu[2]);
+		  log_s((char*)mg_data);*/
+		  /*log_s_int("X",imu[0]*180/M_PI);
+		  log_s_int("Y",imu[1]*180/M_PI);
+		  log_s_int("Z",imu[2]*180/M_PI);*/
+		  //blink_stmled();
 	  }
+
 	  //HAL_Delay(500-125);
   }
   /* USER CODE END 3 */
@@ -212,7 +239,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.ClockSpeed = 400000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;

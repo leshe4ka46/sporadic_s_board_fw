@@ -7,6 +7,8 @@
 #define GYRO_ADDR 0x69
 #define GYRO_REG_DEVID 0x0F
 #define GYRO_REG_CTRL_REG1 0x20
+#define GYRO_REG_CTRL_REG2 0x21
+#define GYRO_REG_CTRL_REG3 0x22
 #define GYRO_REG_CTRL_REG4 0x23
 
 

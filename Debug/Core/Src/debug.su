@@ -2,5 +2,6 @@
 ../Core/Src/debug.c:11:6:log_s	24	static
 ../Core/Src/debug.c:16:6:log_s_wnl	24	static
 ../Core/Src/debug.c:20:6:log_s_int	16	static
-../Core/Src/debug.c:25:6:log_int	16	static
-../Core/Src/debug.c:30:6:log_e	16	static
+../Core/Src/debug.c:24:6:log_p	24	static
+../Core/Src/debug.c:29:6:log_int	16	static
+../Core/Src/debug.c:34:6:log_e	16	static

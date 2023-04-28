@@ -5,6 +5,7 @@
 #include "bmp180.h"
 #include "adxl345.h"
 #include "l3g4200d.h"
+#include "lsm303dlhc.h"
 #include "structs.h"
 
 void GY801_init(I2C_HandleTypeDef *i2c,readings *data);

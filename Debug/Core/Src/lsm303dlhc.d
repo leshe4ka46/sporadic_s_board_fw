@@ -1,4 +1,4 @@
-Core/Src/mmc5883ma.o: ../Core/Src/mmc5883ma.c ../Core/Inc/mmc5883ma.h \
+Core/Src/lsm303dlhc.o: ../Core/Src/lsm303dlhc.c ../Core/Inc/lsm303dlhc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -29,7 +29,7 @@ Core/Src/mmc5883ma.o: ../Core/Src/mmc5883ma.c ../Core/Inc/mmc5883ma.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/debug.h ../Core/Inc/structs.h
-../Core/Inc/mmc5883ma.h:
+../Core/Inc/lsm303dlhc.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:

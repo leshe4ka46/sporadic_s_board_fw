@@ -1,5 +1,0 @@
-mmc5883ma.c:15:6:mag_init	2
-mmc5883ma.c:34:6:mag_get_data	3
-mmc5883ma.c:59:9:mag_read_data	1
-mmc5883ma.c:66:6:mag_write_data	1
-mmc5883ma.c:71:6:mag_calibrate	1

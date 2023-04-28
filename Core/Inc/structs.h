@@ -22,22 +22,23 @@ typedef struct{
 } l3g4200d;
 
 typedef struct{
-	/*int16_t mx;
-	int16_t my;
-	int16_t mz;*/
+	int16_t mx_raw;
+	int16_t my_raw;
+	int16_t mz_raw;
 	double mx;
 	double my;
-	double mz;
+	double mz;/*
 	double mx_cal;
 	double my_cal;
-	double mz_cal;
+	double mz_cal;*/
 } mmc5883ma;
 
 typedef struct{
 	bmp180 bmp180;
 	adxl345 adxl345;
+	adxl345 lsm303dlhc;
 	l3g4200d l3g4200d;
-	mmc5883ma mmc5883ma;
+	mmc5883ma lsm303dlhc_mag;
 } readings;
 
 #endif // STRUCTS_H

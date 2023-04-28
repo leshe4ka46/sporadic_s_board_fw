@@ -37,6 +37,8 @@ extern "C" {
 #include "structs.h"
 #include "debug.h"
 #include "gy801.h"
+#include "ahrs.h"
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -8,4 +8,5 @@ void log_s_wnl(const char *str);
 void log_s_int(const char *str,int32_t i);
 void log_int(int32_t i);
 void log_e(const char *str);
+void log_p(float *data_p);
 #endif /* INC_BMP_H_ */
