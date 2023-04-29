@@ -1,0 +1,4 @@
+../Core/Src/ahrs.c:14:6:MadgwickAHRSupdate	240	static
+../Core/Src/ahrs.c:115:6:MadgwickAHRSupdateIMU	128	static
+../Core/Src/ahrs.c:181:7:invSqrt	32	static
+../Core/Src/ahrs.c:192:6:quat2Euler	56	static
