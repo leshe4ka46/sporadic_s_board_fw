@@ -63,8 +63,8 @@ all: main-build
 main-build: sporadic_s_board_fw.elf secondary-outputs
 
 # Tool invocations
-sporadic_s_board_fw.elf sporadic_s_board_fw.map: $(OBJS) $(USER_OBJS) C:\Users\alex9\STM32CubeIDE\workspace_1.9.0\sporadic_s_board_fw\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "sporadic_s_board_fw.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\alex9\STM32CubeIDE\workspace_1.9.0\sporadic_s_board_fw\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="sporadic_s_board_fw.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+sporadic_s_board_fw.elf sporadic_s_board_fw.map: $(OBJS) $(USER_OBJS) /home/alex/STM32CubeIDE/workspace_1.12.0/sporadic_s_board_fw/STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "sporadic_s_board_fw.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/alex/STM32CubeIDE/workspace_1.12.0/sporadic_s_board_fw/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="sporadic_s_board_fw.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -21,8 +21,12 @@ void log_s_int(const char *str,int32_t i){
 	sprintf((char*)char_log,"%s %ld\r\n",str,i);
 	log_s_wnl((const char*)char_log);
 }
-void log_p(float *data_p){
-	sprintf((char*)char_log,"%p %p %p\r\n",data_p,data_p+4,data_p+4*2);
+void log_p(int16_t *data_p){
+	sprintf((char*)char_log,"%p\r\n",data_p);
+	log_s_wnl((const char*)char_log);
+}
+void log_p_imu(float *data_p){
+	sprintf((char*)char_log,"%p %p %p\r\n",data_p,data_p+1,data_p+2);
 	log_s_wnl((const char*)char_log);
 }
 

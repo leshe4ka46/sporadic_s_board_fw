@@ -5,8 +5,9 @@
  */
 #include "ahrs.h"
 #include <math.h>
+#include "inttypes.h"
 
-#define betaDef    0.2f    // 2 * proportional gain //0.3
+#define betaDef    0.5f    // 2 * proportional gain //0.3
 
 volatile float beta = betaDef; // 2 * proportional gain (Kp)
 volatile float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;  // quaternion of sensor frame relative to auxiliary frame
@@ -188,7 +189,8 @@ float invSqrt(float x) {
   y = y * (1.5f - (halfx * y * y));
   return y;
 }
-
+float old_e[3];
+#define absf(x) (x<0)?x:-1*x
 void quat2Euler( float q[4], float e[3] ) {
   double sqx = q[1] * q[1];
   double sqy = q[2] * q[2];
@@ -196,4 +198,13 @@ void quat2Euler( float q[4], float e[3] ) {
   e[0] = atan2f(2.f * (q[2] * q[3] + q[1] * q[0]), 1 - 2.f * (sqx + sqy)); // -sqx - sqy + sqz + sqw);
   e[1] = asinf(-2.f * (q[1] * q[3] - q[2] * q[0]));
   e[2] = atan2f(2.f * (q[1] * q[2] + q[3] * q[0]), 1 - 2.f * (sqy + sqz)); //sqx - sqy - sqz + sqw);
+
+  /*for(uint8_t ii=0;ii<3;ii++){
+	  if(absf(e[ii])>0.5){
+		  old_e[ii]=e[ii];
+	  }
+	  else{
+		  e[ii]=old_e[ii];
+	  }
+  }*/
 }

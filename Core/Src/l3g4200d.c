@@ -14,8 +14,10 @@ void GYRO_init(I2C_HandleTypeDef *i2c,readings *data){
 	else{
 		log_s("ERROR");
 	}
-	GYRO_WriteReg(GYRO_REG_CTRL_REG1,0b10111111);
-	GYRO_WriteReg(GYRO_REG_CTRL_REG2,0b00100000);
+	//GYRO_WriteReg(GYRO_REG_CTRL_REG1,0b00001111);
+	//GYRO_WriteReg(GYRO_REG_CTRL_REG2,0b00101001);
+	GYRO_WriteReg(GYRO_REG_CTRL_REG1,0b00001111);
+	GYRO_WriteReg(GYRO_REG_CTRL_REG2,0b00000000);
 	GYRO_WriteReg(GYRO_REG_CTRL_REG4,0b00110000);
 }
 
@@ -36,9 +38,7 @@ void GYRO_power(uint8_t pwr){
 }
 
 void GYRO_get_data(){
-	uint32_t gyro_t=HAL_GetTick();
 	_gyro_data->l3g4200d.gx=((GYRO_ReadReg(0x29)<<8)|GYRO_ReadReg(0x28));
 	_gyro_data->l3g4200d.gy=((GYRO_ReadReg(0x2B)<<8)|GYRO_ReadReg(0x2A));
 	_gyro_data->l3g4200d.gz=((GYRO_ReadReg(0x2D)<<8)|GYRO_ReadReg(0x2C));
-	log_s_int("GYRO",HAL_GetTick()-gyro_t);
 }

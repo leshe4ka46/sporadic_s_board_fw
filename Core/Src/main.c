@@ -132,9 +132,21 @@ int main(void)
   // madgwick
   uint32_t ahrs_t;
   float imu[3];
-  log_p(&imu[0]);
+  log_p_imu(&imu[0]);
+  log_p(&data.lsm303dlhc.ax);
+  log_p(&data.lsm303dlhc.ay);
+  log_p(&data.lsm303dlhc.az);
+  log_p(&data.l3g4200d.gx);
+  log_p(&data.l3g4200d.gy);
+  log_p(&data.l3g4200d.gz);
+  log_p(&data.lsm303dlhc_mag.mx);
+  log_p(&data.lsm303dlhc_mag.my);
+  log_p(&data.lsm303dlhc_mag.mz);
   float quat[4];
   ahrs_t=HAL_GetTick();
+  uint16_t hz;
+  uint32_t hz_t=HAL_GetTick();
+  log_p(&hz);
   while (1)
   {
     /* USER CODE END WHILE */
@@ -146,30 +158,36 @@ int main(void)
 	  //nrf_send_data[0]=cc;
 	  //nrf24l01p_write_tx_fifo(&nrf_send_data);
 	  //cc+=1;
-	  if(HAL_GetTick()-last_t>=5){
-		  last_t=HAL_GetTick();
-		  time_t=HAL_GetTick();
+
+
 		  GY801_update_data();
-		  log_s_int("READ",HAL_GetTick()-time_t);
-		  time_t=HAL_GetTick();
+		  //log_s_int("AHRS",HAL_GetTick()-ahrs_t);
+		  hz+=1;
 		  MadgwickAHRSupdate((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625,(float)data.lsm303dlhc_mag.mx*0.1388,(float)data.lsm303dlhc_mag.my*0.1388,(float)data.lsm303dlhc_mag.mz*0.1388);
 		  //MadgwickAHRSupdateIMU((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625);
 		  //MadgwickAHRSupdateIMU(0.02,-0.01,-0.02,-0.01,3200,8900,17600);
 		  ahrs_t=HAL_GetTick();
-
-		  log_s_int("AHRS",HAL_GetTick()-time_t);
 		  quat[0] = q0; quat[1] = q1; quat[2] = q2; quat[3] = q3;
 		  quat2Euler(&quat[0], &imu[0]);
-		  for(uint8_t i=0;i<3;i++){
+		  /*for(uint8_t i=0;i<3;i++){
 			  imu[i]/=0.01745329252;
+		  }*/
+		  if (HAL_GetTick()-hz_t>1000){
+			  hz_t=HAL_GetTick();
+			  log_s_int("HZ",hz);
+			  hz=0;
 		  }
-		  /*char* mg_data[100];
-		  sprintf((char*)mg_data,"X:%f Y:%f Z:%f %p %p %p",imu[0]*180/M_PI,imu[1]*180/M_PI,imu[2]*180/M_PI,&imu[0],&imu[1],&imu[2]);
-		  log_s((char*)mg_data);*/
+
+
+	  if(HAL_GetTick()-last_t>=1000){
+		  char* mg_data[100];
+		  sprintf((char*)mg_data,"%f\t%f\t%f",imu[0]*180/M_PI,imu[1]*180/M_PI,imu[2]*180/M_PI);
+		  log_s((char*)mg_data);
 		  /*log_s_int("X",imu[0]*180/M_PI);
 		  log_s_int("Y",imu[1]*180/M_PI);
 		  log_s_int("Z",imu[2]*180/M_PI);*/
 		  //blink_stmled();
+		  last_t=HAL_GetTick();
 	  }
 
 	  //HAL_Delay(500-125);
