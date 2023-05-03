@@ -2,4 +2,4 @@ lsm303dlhc.c:4:6:mag_init	2
 lsm303dlhc.c:26:9:mag_read_data	2
 lsm303dlhc.c:32:6:mag_write_data	2
 lsm303dlhc.c:36:6:lsm303dlhc_get_acc	1
-lsm303dlhc.c:43:6:lsm303dlhc_get_mag	1
+lsm303dlhc.c:41:6:lsm303dlhc_get_mag	1

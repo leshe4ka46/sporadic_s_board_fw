@@ -3,6 +3,7 @@
 ../Core/Src/debug.c:16:6:log_s_wnl	24	static
 ../Core/Src/debug.c:20:6:log_s_int	16	static
 ../Core/Src/debug.c:24:6:log_p	16	static
-../Core/Src/debug.c:28:6:log_p_imu	24	static
-../Core/Src/debug.c:33:6:log_int	16	static
-../Core/Src/debug.c:38:6:log_e	16	static
+../Core/Src/debug.c:28:6:log_s_p_3	32	static
+../Core/Src/debug.c:32:6:log_s_p	16	static
+../Core/Src/debug.c:37:6:log_int	16	static
+../Core/Src/debug.c:42:6:log_e	16	static

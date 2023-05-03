@@ -44,6 +44,7 @@ I2C_HandleTypeDef hi2c1;
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart1;
 
@@ -75,6 +76,7 @@ static void MX_I2C1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -121,8 +123,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI1_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   blink_stmled();
   I2C_Scan();
   debug_init(&huart1);
@@ -139,49 +143,25 @@ int main(void)
   uint32_t last_t, time_t;
 
   // madgwick
-  uint32_t ahrs_t;
-  float imu[3];
-  log_p_imu(&imu[0]);
-  log_p(&data.lsm303dlhc.ax);
-  log_p(&data.lsm303dlhc.ay);
-  log_p(&data.lsm303dlhc.az);
-  log_p(&data.l3g4200d.gx);
-  log_p(&data.l3g4200d.gy);
-  log_p(&data.l3g4200d.gz);
-  log_p(&data.lsm303dlhc_mag.mx);
-  log_p(&data.lsm303dlhc_mag.my);
-  log_p(&data.lsm303dlhc_mag.mz);
-  float quat[4];
-  ahrs_t=HAL_GetTick();
+  log_s_p_3("ACCEL",&data.lsm303dlhc.ax,&data.lsm303dlhc.ay,&data.lsm303dlhc.az);
+  log_s_p_3("GYRO",&data.l3g4200d.gx,&data.l3g4200d.gy,&data.l3g4200d.gz);
+  log_s_p_3("MAG",&data.lsm303dlhc_mag.mx,&data.lsm303dlhc_mag.my,&data.lsm303dlhc_mag.mz);
+  uint32_t ahrs_t=HAL_GetTick();
   uint16_t hz;
   uint32_t hz_t=HAL_GetTick();
-  log_p(&hz);
-  mahony_init();
+  log_s_p("HZ",&hz);
+  mahony_print_ptr();
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  /*char* ms_data[100];
-	  sprintf(ms_data,"data:%d %d",BMP180_UT(),BMP180_UT());
-	  log_s(ms_data);*/
-	  //nrf_send_data[0]=cc;
-	  //nrf24l01p_write_tx_fifo(&nrf_send_data);
-	  //cc+=1;
 	  GY801_update_data();
-	  //log_s_int("AHRS",HAL_GetTick()-ahrs_t);
 	  hz+=1;
-	  //MadgwickAHRSupdate((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625,(float)data.lsm303dlhc_mag.mx/450,(float)data.lsm303dlhc_mag.my/450,(float)data.lsm303dlhc_mag.mz/400);
-	  //MadgwickAHRSupdateIMU((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625);
 	  mahony_update((float)(HAL_GetTick()-ahrs_t)/1000.0,(float)data.l3g4200d.gx*M_PI/180/131,(float)data.l3g4200d.gy*M_PI/180/131,(float)data.l3g4200d.gz*M_PI/180/131,(float)data.lsm303dlhc.ax*21.5625,(float)data.lsm303dlhc.ay*21.5625,(float)data.lsm303dlhc.az*21.5625,(float)data.lsm303dlhc_mag.mx/450,(float)data.lsm303dlhc_mag.my/450,(float)data.lsm303dlhc_mag.mz/400);
 	  ahrs_t=HAL_GetTick();
-	  /*quat[0] = q0; quat[1] = q1; quat[2] = q2; quat[3] = q3;
-	  quat2Euler(&quat[0], &imu[0]);*/
-	  /*for(uint8_t i=0;i<3;i++){
-		  imu[i]/=0.01745329252;
-	  }*/
-	  //htim2.Instance->CCR1=map(imu[1],-90,70,25,125);
-	  htim2.Instance->CCR1=map(mahony_getPitchRadians(),-90,70,25,125);
+	  htim2.Instance->CCR1=map(mahony_getPitch(),-90,70,25,125);
+	  htim3.Instance->CCR1=map(mahony_getRoll(),-80,90,125,25);
 	  if (HAL_GetTick()-hz_t>1000){
 		  hz_t=HAL_GetTick();
 		  log_s_int("HZ",hz);
@@ -335,6 +315,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 0 */
 
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
 
@@ -344,9 +325,18 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 1680-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 1000;
+  htim2.Init.Period = 1000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
@@ -369,6 +359,65 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 1680-1;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 1000-1;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
 
 }
 

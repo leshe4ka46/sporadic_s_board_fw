@@ -9,5 +9,7 @@ void log_s_int(const char *str,int32_t i);
 void log_int(int32_t i);
 void log_e(const char *str);
 void log_p(int16_t *data_p);
-void log_p_imu(float *data_p);
+void log_s_p_3(const char *str,int16_t *data_p0,int16_t *data_p1,int16_t *data_p2);
+void log_s_p(const char *str,int16_t *data_p0);
+
 #endif /* INC_BMP_H_ */

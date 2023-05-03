@@ -3,6 +3,7 @@ debug.c:11:6:log_s	1
 debug.c:16:6:log_s_wnl	1
 debug.c:20:6:log_s_int	1
 debug.c:24:6:log_p	1
-debug.c:28:6:log_p_imu	1
-debug.c:33:6:log_int	1
-debug.c:38:6:log_e	1
+debug.c:28:6:log_s_p_3	1
+debug.c:32:6:log_s_p	1
+debug.c:37:6:log_int	1
+debug.c:42:6:log_e	1

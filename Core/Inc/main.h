@@ -37,7 +37,6 @@ extern "C" {
 #include "structs.h"
 #include "debug.h"
 #include "gy801.h"
-//#include "ahrs.h"
 #include "mahonyahrs.h"
 #include <math.h>
 /* USER CODE END Includes */

@@ -19,6 +19,37 @@ void GY801_init(I2C_HandleTypeDef *i2c,readings *data){
 
 
 }
+int16_t axfilt[3],ayfilt[3],azfilt[3];
+int16_t temp[3];
+int16_t med(uint8_t mode,int16_t new_val){
+	switch(mode){
+		case 0:
+			memcpy(&temp, axfilt, sizeof(axfilt));
+			break;
+		case 1:
+			memcpy(&temp, ayfilt, sizeof(ayfilt));
+			break;
+		case 2:
+			memcpy(&temp, azfilt, sizeof(azfilt));
+			break;
+	}
+	temp[0]=temp[1];
+	temp[1]=temp[2];
+	temp[2]=new_val;
+	switch(mode){
+		case 0:
+			memcpy(&axfilt, temp, sizeof(temp));
+			break;
+		case 1:
+			memcpy(&ayfilt, temp, sizeof(temp));
+			break;
+		case 2:
+			memcpy(&azfilt, temp, sizeof(temp));
+			break;
+	}
+	return (temp[0] < temp[1]) ? ((temp[1] < temp[2]) ? temp[1] : ((temp[2] < temp[0]) ? temp[0] : temp[2])) : ((temp[0] < temp[2]) ? temp[0] : ((temp[2] < temp[1]) ? temp[1] : temp[2]));
+}
+
 
 void GY801_update_data(){
 	/*BMP180_get_data();
@@ -28,6 +59,9 @@ void GY801_update_data(){
 	//mag_get_data();
 	lsm303dlhc_get_acc();
 	lsm303dlhc_get_mag();
+	_data_gy->lsm303dlhc.ax=med(0,_data_gy->lsm303dlhc.ax);
+	_data_gy->lsm303dlhc.ay=med(1,_data_gy->lsm303dlhc.ay);
+	_data_gy->lsm303dlhc.az=med(2,_data_gy->lsm303dlhc.az);
 	/*char* gy_data[100];
 	//sprintf((char*)gy_data,"X:%06d Y:%06d Z:%06d %p %p %p",_data_gy->lsm303dlhc_mag.mx_raw,_data_gy->lsm303dlhc_mag.my_raw,_data_gy->lsm303dlhc_mag.mz_raw,&_data_gy->lsm303dlhc_mag.mx,&_data_gy->lsm303dlhc_mag.my,&_data_gy->lsm303dlhc_mag.mz);
 	//sprintf((char*)gy_data,"X:%06d Y:%06d Z:%06d",_data_gy->lsm303dlhc_mag.mx,_data_gy->lsm303dlhc_mag.my,_data_gy->lsm303dlhc_mag.mz);

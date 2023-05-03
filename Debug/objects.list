@@ -1,5 +1,4 @@
 "./Core/Src/adxl345.o"
-"./Core/Src/ahrs.o"
 "./Core/Src/bmp180.o"
 "./Core/Src/debug.o"
 "./Core/Src/gy801.o"
