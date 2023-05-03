@@ -37,7 +37,8 @@ extern "C" {
 #include "structs.h"
 #include "debug.h"
 #include "gy801.h"
-#include "ahrs.h"
+//#include "ahrs.h"
+#include "mahonyahrs.h"
 #include <math.h>
 /* USER CODE END Includes */
 
@@ -55,6 +56,8 @@ extern "C" {
 /* USER CODE BEGIN EM */
 
 /* USER CODE END EM */
+
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
