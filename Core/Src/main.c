@@ -89,6 +89,25 @@ int16_t map(float x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t ou
 }
 void blink_stmled();
 readings data;
+static HAL_StatusTypeDef I2CResetBus(void)
+{
+    __HAL_I2C_DISABLE(&hi2c1);
+    /* 1. Set SWRST bit in I2Cx_CR1 register. */
+    hi2c1.Instance->CR1 |=  I2C_CR1_SWRST;
+    HAL_Delay(2);
+    /* 2. Clear SWRST bit in I2Cx_CR1 register. */
+    hi2c1.Instance->CR1 &=  ~I2C_CR1_SWRST;
+    HAL_Delay(2);
+    /* 3. Enable the I2C peripheral by setting the PE bit in I2Cx_CR1 register */
+    MX_I2C1_Init();
+    __HAL_I2C_ENABLE(&hi2c1);
+    HAL_Delay(2);
+    hi2c1.ErrorCode = HAL_I2C_ERROR_NONE;
+    hi2c1.State = HAL_I2C_STATE_READY;
+    hi2c1.PreviousState = 0;
+    hi2c1.Mode = HAL_I2C_MODE_NONE;
+    return HAL_OK;
+}
 /* USER CODE END 0 */
 
 /**
@@ -114,7 +133,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  I2CResetBus();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -125,10 +144,11 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   blink_stmled();
-  I2C_Scan();
+  //I2C_Scan();
   debug_init(&huart1);
   log_s("Start");
   GY801_init(&hi2c1,&data);
@@ -147,7 +167,7 @@ int main(void)
   log_s_p_3("GYRO",&data.l3g4200d.gx,&data.l3g4200d.gy,&data.l3g4200d.gz);
   log_s_p_3("MAG",&data.lsm303dlhc_mag.mx,&data.lsm303dlhc_mag.my,&data.lsm303dlhc_mag.mz);
   uint32_t ahrs_t=HAL_GetTick();
-  uint16_t hz;
+  uint16_t hz=0;
   uint32_t hz_t=HAL_GetTick();
   log_s_p("HZ",&hz);
   mahony_print_ptr();
@@ -497,7 +517,32 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+
+
+
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* I2C fix */
+  /*GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+  for (int i = 0; i<10; i++) {
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
+    HAL_Delay(3);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
+    HAL_Delay(3);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
+    HAL_Delay(3);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
+    HAL_Delay(3);
+  }
+  GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);*/
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
