@@ -1,5 +1,5 @@
-../Core/Src/l3g4200d.c:7:6:GYRO_init	16	static
-../Core/Src/l3g4200d.c:22:6:GYRO_WriteReg	32	static
-../Core/Src/l3g4200d.c:27:9:GYRO_ReadReg	32	static
-../Core/Src/l3g4200d.c:34:6:GYRO_power	16	static
-../Core/Src/l3g4200d.c:38:6:GYRO_get_data	16	static
+../Core/Src/l3g4200d.c:8:9:GYRO_init	16	static
+../Core/Src/l3g4200d.c:24:6:GYRO_WriteReg	32	static
+../Core/Src/l3g4200d.c:29:9:GYRO_ReadReg	32	static
+../Core/Src/l3g4200d.c:37:6:GYRO_power	16	static
+../Core/Src/l3g4200d.c:41:6:GYRO_get_data	16	static

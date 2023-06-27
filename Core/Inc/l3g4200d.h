@@ -11,9 +11,8 @@
 #define GYRO_REG_CTRL_REG3 0x22
 #define GYRO_REG_CTRL_REG4 0x23
 
-
 uint8_t GYRO_ReadReg(uint8_t reg);
-void GYRO_init(I2C_HandleTypeDef *i2c,readings *data);
+uint8_t GYRO_init(I2C_HandleTypeDef *i2c, readings *data);
 void GYRO_power(uint8_t pwr);
 void GYRO_get_data();
 

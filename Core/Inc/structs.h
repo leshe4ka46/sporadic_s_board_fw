@@ -6,6 +6,7 @@
 typedef struct{
 	uint32_t pressure;
 	int32_t temp;
+	double height;
 } bmp180;
 
 typedef struct{

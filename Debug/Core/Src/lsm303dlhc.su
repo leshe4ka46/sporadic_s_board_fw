@@ -1,5 +1,5 @@
-../Core/Src/lsm303dlhc.c:4:6:mag_init	16	static
-../Core/Src/lsm303dlhc.c:26:9:mag_read_data	40	static
-../Core/Src/lsm303dlhc.c:32:6:mag_write_data	32	static
-../Core/Src/lsm303dlhc.c:36:6:lsm303dlhc_get_acc	16	static
-../Core/Src/lsm303dlhc.c:41:6:lsm303dlhc_get_mag	24	static
+../Core/Src/lsm303dlhc.c:5:9:mag_init	16	static
+../Core/Src/lsm303dlhc.c:27:9:mag_read_data	40	static
+../Core/Src/lsm303dlhc.c:36:6:mag_write_data	32	static
+../Core/Src/lsm303dlhc.c:42:6:lsm303dlhc_get_acc	16	static
+../Core/Src/lsm303dlhc.c:53:6:lsm303dlhc_get_mag	24	static

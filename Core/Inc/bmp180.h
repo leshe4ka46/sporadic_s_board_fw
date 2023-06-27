@@ -4,7 +4,6 @@
 #include "debug.h"
 #include "structs.h"
 
-
 #define BMP180_ADDR 0x77
 #define BMP180_CONTROL_REG 0xF4
 #define BMP180_MSB 0xF6
@@ -13,8 +12,6 @@
 #define BMP180_CMD_TEMP 0x2e
 #define BMP180_CHIP_ID  0x55
 #define BMP180_GET_ID_REG 0xD0
-
-
 
 #define BMP180_AC1_MSB 0xAA
 #define BMP180_AC1_LSB 0xAB
@@ -39,32 +36,30 @@
 #define BMP180_MD_MSB  0xBE
 #define BMP180_MD_LSB  0xBF
 
-
 typedef enum BMP180_REGS {
-    AC1_MSB = 0xAA,
-    AC1_LSB,
-    AC2_MSB,
-    AC2_LSB,
-    AC3_MSB,
-    AC3_LSB,
-    AC4_MSB,
-    AC4_LSB,
-    AC5_MSB,
-    AC5_LSB,
-    AC6_MSB,
-    AC6_LSB,
-    B1_MSB,
-    B1_LSB,
-    B2_MSB,
-    B2_LSB,
-    MB_MSB,
-    MB_LSB,
-    MC_MSB,
-    MC_LSB,
-    MD_MSB,
-    MD_LSB
+	AC1_MSB = 0xAA,
+	AC1_LSB,
+	AC2_MSB,
+	AC2_LSB,
+	AC3_MSB,
+	AC3_LSB,
+	AC4_MSB,
+	AC4_LSB,
+	AC5_MSB,
+	AC5_LSB,
+	AC6_MSB,
+	AC6_LSB,
+	B1_MSB,
+	B1_LSB,
+	B2_MSB,
+	B2_LSB,
+	MB_MSB,
+	MB_LSB,
+	MC_MSB,
+	MC_LSB,
+	MD_MSB,
+	MD_LSB
 } BMP180_REGS;
-
 
 typedef struct BMP180_SETTINGS {
 	short AC1;
@@ -82,7 +77,7 @@ typedef struct BMP180_SETTINGS {
 
 uint8_t BMP180_ReadReg(uint8_t reg);
 
-void BMP180_init(I2C_HandleTypeDef *i2c,readings *data);
+uint8_t BMP180_init(I2C_HandleTypeDef *i2c, readings *data);
 
 void BMP180_get_calibration_coefficients();
 
