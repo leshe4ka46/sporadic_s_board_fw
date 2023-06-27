@@ -342,14 +342,10 @@ int main(void) {
 					if (max_height_t == 0) {
 						max_height_t = HAL_GetTick();
 						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-						log_s("ton----------");
 					}
-					log_s_int("max_height_t",max_height_t);
-					log_s_int("t",HAL_GetTick());
 					if (HAL_GetTick()-max_height_t  > 5000
 							&& max_height_t != 0) {
 						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
-						log_s("toff-----------");
 					}
 				}
 			}
