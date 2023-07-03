@@ -217,8 +217,9 @@ int main(void) {
 
 	uint32_t last_t; //,test_t;
 	float pitch, roll;
-	float max_height=0;
+	float max_height=0,start_height=0;
 	uint32_t max_height_t = 0;
+	uint8_t start_flag=0,end_flag=0;
 
 	log_s_int("con 0", constrain(2, -1, 1));
 	log_s_int("con 2", constrain(2, 1, -1));
@@ -317,15 +318,17 @@ int main(void) {
 
 			memset(sdBuff, 0, sizeof(sdBuff));
 			sprintf(sdBuff,
-					"%ld|%ld|%f|%.1f|%ld|%d|%d|%d|%d|%d|%d|%f|%f|%f|%f|%f|%f|\r\n",
+					"%ld|%ld|%f|%.1f|%ld|%f|%d|%d|%d|%d|%d|%d|%f|%f|%f|%f|%f|%f|%d|%d|\r\n",
 					packet, HAL_GetTick(), (float) data.bmp180.height,
 					((float) data.bmp180.temp) / 10, data.bmp180.pressure,
+					sqrt(pow(data.adxl345.ax,2)+ pow(data.adxl345.ay,2)+ pow(data.adxl345.az,2)),
 					data.adxl345.ax, data.adxl345.ay, data.adxl345.az,
 					data.l3g4200d.gx, data.l3g4200d.gy, data.l3g4200d.gz,
 					(float) data.lsm303dlhc_mag.mx,
 					(float) data.lsm303dlhc_mag.my,
-					(float) data.lsm303dlhc_mag.mz, mahony_getRoll(),
-					mahony_getPitch(), mahony_getYaw());
+					(float) data.lsm303dlhc_mag.mz,
+					mahony_getRoll(), mahony_getPitch(), mahony_getYaw(),
+					start_flag,end_flag);
 			//log_s_wnl(sdBuff);
 			if (f_write(&logFile, sdBuff, strlen(sdBuff), &tempBytes)
 					== FR_OK) {
@@ -334,10 +337,20 @@ int main(void) {
 				HAL_GPIO_TogglePin(GPIOC, LED_RF_Pin);
 			/*sprintf((char*) log_chars, "|%c%c|\r\n",(data.adxl345.ax >> 8 * 0) & 0xFF,(data.adxl345.ax >> 8 * 1) & 0xFF);
 			 log_s_wnl((const char*) log_chars);*/
+			//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, (packet>50 && packet<100)?GPIO_PIN_SET:GPIO_PIN_RESET);
 			if (HAL_GetTick() > 5000) {
-				log_s_float("height", data.bmp180.height);
+				if(start_height==0){
+					start_height=data.bmp180.height;
+				}
+				if (data.bmp180.height-start_height>10){
+					start_flag=1;
+				}
+				if(start_flag && data.bmp180.height-start_height<10){
+					end_flag=1;
+				}
+				//log_s_float("height", data.bmp180.height);
 				max_height = max(data.bmp180.height, max_height);
-				log_s_float("m__eight", max_height);
+				//log_s_float("m__eight", max_height);
 				if (max_height - data.bmp180.height > 5) {
 					if (max_height_t == 0) {
 						max_height_t = HAL_GetTick();
