@@ -1,0 +1,8 @@
+../Core/Src/mahonyahrs.c:44:6:mahony_print_ptr	8	static
+../Core/Src/mahonyahrs.c:48:6:mahony_update	160	static
+../Core/Src/mahonyahrs.c:163:6:mahony_updateIMU	72	static
+../Core/Src/mahonyahrs.c:237:7:mahony_invSqrt	32	static
+../Core/Src/mahonyahrs.c:253:6:mahony_computeAngles	8	static
+../Core/Src/mahonyahrs.c:260:7:mahony_getRoll	8	static
+../Core/Src/mahonyahrs.c:265:7:mahony_getPitch	8	static
+../Core/Src/mahonyahrs.c:270:7:mahony_getYaw	8	static

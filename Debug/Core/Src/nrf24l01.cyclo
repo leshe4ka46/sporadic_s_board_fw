@@ -1,0 +1,12 @@
+nrf24l01.h:6:22:DelayMicro	2
+nrf24l01.c:18:6:nrf_init	1
+nrf24l01.c:64:6:nrf_toggle_activate	1
+nrf24l01.c:73:6:nrf_rx_mode	1
+nrf24l01.c:83:6:nrf_flush_tx	1
+nrf24l01.c:90:6:nrf_flush_rx	1
+nrf24l01.c:97:6:nrf_tx_mode	1
+nrf24l01.c:107:6:nrf_send	4
+nrf24l01.c:128:9:nrf_read_reg	1
+nrf24l01.c:139:6:nrf_write_reg	1
+nrf24l01.c:149:6:nrf_read_buf	1
+nrf24l01.c:156:6:nrf_write_buf	1

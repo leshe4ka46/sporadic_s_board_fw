@@ -1,0 +1,8 @@
+mahonyahrs.c:44:6:mahony_print_ptr	1
+mahonyahrs.c:48:6:mahony_update	8
+mahonyahrs.c:163:6:mahony_updateIMU	5
+mahonyahrs.c:237:7:mahony_invSqrt	1
+mahonyahrs.c:253:6:mahony_computeAngles	1
+mahonyahrs.c:260:7:mahony_getRoll	2
+mahonyahrs.c:265:7:mahony_getPitch	2
+mahonyahrs.c:270:7:mahony_getYaw	2

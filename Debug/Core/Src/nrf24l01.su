@@ -1,0 +1,12 @@
+../Core/Inc/nrf24l01.h:6:22:DelayMicro	16	static
+../Core/Src/nrf24l01.c:18:6:nrf_init	16	static
+../Core/Src/nrf24l01.c:64:6:nrf_toggle_activate	8	static
+../Core/Src/nrf24l01.c:73:6:nrf_rx_mode	8	static
+../Core/Src/nrf24l01.c:83:6:nrf_flush_tx	8	static
+../Core/Src/nrf24l01.c:90:6:nrf_flush_rx	8	static
+../Core/Src/nrf24l01.c:97:6:nrf_tx_mode	8	static
+../Core/Src/nrf24l01.c:107:6:nrf_send	24	static
+../Core/Src/nrf24l01.c:128:9:nrf_read_reg	24	static
+../Core/Src/nrf24l01.c:139:6:nrf_write_reg	16	static
+../Core/Src/nrf24l01.c:149:6:nrf_read_buf	16	static
+../Core/Src/nrf24l01.c:156:6:nrf_write_buf	16	static
