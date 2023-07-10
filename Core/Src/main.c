@@ -218,8 +218,8 @@ int main(void) {
 	uint32_t last_t; //,test_t;
 	float pitch, roll;
 	float max_height=0,start_height=0;
-	uint32_t max_height_t = 0;
-	uint8_t start_flag=0,end_flag=0;
+	uint32_t max_height_t = 0,max_accel_t=0;
+	uint8_t start_flag=0,end_flag=0,motor_flag=0,enable_compensate_flag=0;
 
 	log_s_int("con 0", constrain(2, -1, 1));
 	log_s_int("con 2", constrain(2, 1, -1));
@@ -258,8 +258,8 @@ int main(void) {
 				(float) data.lsm303dlhc_mag.mz / 450);
 		//log_s_int("AHRS_T", HAL_GetTick() - ahrs_t);
 		ahrs_t = HAL_GetTick();
-		pitch = constrain(mahony_getPitch(),-20,20) + 10;
-		roll = constrain(mahony_getRoll(),-20,20) + 10;
+		pitch = (enable_compensate_flag==1)?constrain(mahony_getPitch(),-20,20):0  + 10;
+		roll = (enable_compensate_flag==1)?constrain(mahony_getRoll(),-20,20):0 + 10;
 		htim2.Instance->CCR1 = constrain(
 				map(/*(pitch<15+21 && pitch> -15+21)?pitch:21*/pitch, -90, 90,
 						125, 25), 25, 125);
@@ -318,7 +318,7 @@ int main(void) {
 
 			memset(sdBuff, 0, sizeof(sdBuff));
 			sprintf(sdBuff,
-					"%ld|%ld|%f|%.1f|%ld|%f|%d|%d|%d|%d|%d|%d|%f|%f|%f|%f|%f|%f|%d|%d|\r\n",
+					"%ld|%ld|%f|%.1f|%ld|%f|%d|%d|%d|%d|%d|%d|%f|%f|%f|%f|%f|%f|%d|%d|%d|\r\n",
 					packet, HAL_GetTick(), (float) data.bmp180.height,
 					((float) data.bmp180.temp) / 10, data.bmp180.pressure,
 					sqrt(pow(data.adxl345.ax,2)+ pow(data.adxl345.ay,2)+ pow(data.adxl345.az,2)),
@@ -328,7 +328,7 @@ int main(void) {
 					(float) data.lsm303dlhc_mag.my,
 					(float) data.lsm303dlhc_mag.mz,
 					mahony_getRoll(), mahony_getPitch(), mahony_getYaw(),
-					start_flag,end_flag);
+					start_flag,motor_flag,end_flag);
 			//log_s_wnl(sdBuff);
 			if (f_write(&logFile, sdBuff, strlen(sdBuff), &tempBytes)
 					== FR_OK) {
@@ -338,6 +338,12 @@ int main(void) {
 			/*sprintf((char*) log_chars, "|%c%c|\r\n",(data.adxl345.ax >> 8 * 0) & 0xFF,(data.adxl345.ax >> 8 * 1) & 0xFF);
 			 log_s_wnl((const char*) log_chars);*/
 			//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, (packet>50 && packet<100)?GPIO_PIN_SET:GPIO_PIN_RESET);
+			if(sqrt(pow(data.adxl345.ax,2)+ pow(data.adxl345.ay,2)+ pow(data.adxl345.az,2))>32*2 && max_accel_t==0 && HAL_GetTick() > 2000){
+				max_accel_t=HAL_GetTick();
+			}
+			if(HAL_GetTick()-max_accel_t>2000 && max_accel_t!=0){
+				enable_compensate_flag=1;
+			}
 			if (HAL_GetTick() > 5000) {
 				if(start_height==0){
 					start_height=data.bmp180.height;
@@ -354,6 +360,7 @@ int main(void) {
 				if (max_height - data.bmp180.height > 5) {
 					if (max_height_t == 0) {
 						max_height_t = HAL_GetTick();
+						motor_flag=1;
 						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
 					}
 					if (HAL_GetTick()-max_height_t  > 5000
